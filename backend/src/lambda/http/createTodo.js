@@ -1,6 +1,7 @@
 import { DynamoDB } from '@aws-sdk/client-dynamodb'
 import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb'
 import { v4 as uuidv4 } from 'uuid'
+import { handler as getUserId } from '../auth/userId.js'
 
 /**
  * {
@@ -20,9 +21,15 @@ const groupsTable = process.env.GROUPS_TABLE
 export async function handler(event) {
   const itemId = uuidv4()
   const parsedBody = JSON.parse(event.body)
-  console.log("parsedBody", parsedBody)
+  console.log("creatret Todo function, parsedBody", parsedBody)
+
+    // Extracting user ID using "getUserId"
+  const authorization = event.headers.Authorization
+  const userId = getUserId(authorization)
+  console.log("userId", userId)
   const newItem = {
     id: itemId,
+    userId,
     ...parsedBody
   }
 
@@ -41,3 +48,13 @@ export async function handler(event) {
     })
   }
 }
+
+// function getUserId(authorizationHeader) {
+
+//   const split = authorizationHeader.split(' ')
+//   const jwtToken = split[1]
+
+//   const decodedJwt = jsonwebtoken.decode(jwtToken)
+//   console.log("decodedJwt.sub", decodedJwt.sub)
+//   return decodedJwt.sub
+// }
