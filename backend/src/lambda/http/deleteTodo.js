@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid'
  */
 const dynamoDbDocument = DynamoDBDocument.from(new DynamoDB())
 
-const groupsTable = process.env.GROUPS_TABLE
+const groupsTable = process.env.TODO_TABLE
 
 export async function handler(event) {
   const parsedBody = JSON.parse(event.body)

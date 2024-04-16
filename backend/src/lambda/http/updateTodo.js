@@ -5,8 +5,6 @@ import { v4 as uuidv4 } from 'uuid'
 /**
  * {
       "id":"",
-      "todoId":"605525c4-d36c-1234-b3ff-65b853344123",
-      "userId":"google-oauth2|115783759495544745774",
       "attachmentUrl":"https://serverless-c4-todo-images.s3.amazonaws.com/605525c4-1234-4d23-b3ff-65b853344123",
       "dueDate":"2022-12-12",
       "createdAt":"2022-11-28T22:04:08.613Z",
@@ -16,7 +14,7 @@ import { v4 as uuidv4 } from 'uuid'
  */
 const dynamoDbDocument = DynamoDBDocument.from(new DynamoDB())
 
-const groupsTable = process.env.GROUPS_TABLE
+const groupsTable = process.env.TODO_TABLE
 
 export async function handler(event) {
   const parsedBody = JSON.parse(event.body)

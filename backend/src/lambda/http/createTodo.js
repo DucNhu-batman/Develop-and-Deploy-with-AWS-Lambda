@@ -5,7 +5,6 @@ import { handler as getUserId } from '../auth/userId.js'
 
 /**
  * {
-      "todoId":"605525c4-d36c-1234-b3ff-65b853344123",
       "userId":"google-oauth2|115783759495544745774",
       "attachmentUrl":"https://serverless-c4-todo-images.s3.amazonaws.com/605525c4-1234-4d23-b3ff-65b853344123",
       "dueDate":"2022-12-12",
@@ -16,7 +15,7 @@ import { handler as getUserId } from '../auth/userId.js'
  */
 const dynamoDbDocument = DynamoDBDocument.from(new DynamoDB())
 
-const groupsTable = process.env.GROUPS_TABLE
+const groupsTable = process.env.TODO_TABLE
 
 export async function handler(event) {
   const itemId = uuidv4()
@@ -28,9 +27,9 @@ export async function handler(event) {
   const userId = getUserId(authorization)
   console.log("userId", userId)
   const newItem = {
+    ...parsedBody,
     id: itemId,
-    userId,
-    ...parsedBody
+    userId
   }
 
   await dynamoDbDocument.put({
