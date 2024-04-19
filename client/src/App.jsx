@@ -67,7 +67,7 @@ function generateCurrentPage(isAuthenticated) {
     <Routes>
       <Route path="/" exact element={<Todos />} />
 
-      <Route path="/todos/:todoId/edit" exact element={<EditTodo />} />
+      <Route path="/todos/:id/edit" exact element={<EditTodo />} />
 
       <Route path="*" element={<NotFound />} />
     </Routes>

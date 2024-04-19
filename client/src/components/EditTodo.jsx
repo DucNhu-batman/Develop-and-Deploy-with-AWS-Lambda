@@ -43,10 +43,10 @@ export function EditTodo() {
 
       setUploadState(UploadState.FetchingPresignedUrl)
       const accessToken = await getAccessTokenSilently({
-        audience: `https://test-endpoint.auth0.com/api/v2/`,
-        scope: 'write:todos'
+        audience: `https://dev-ta3xeq8gnykc6zo2.us.auth0.com/api/v2/`,
+        scope: 'write:todo'
       })
-      const uploadUrl = await getUploadUrl(accessToken, todoId)
+      const uploadUrl = await getUploadUrl(accessToken, id)
 
       setUploadState(UploadState.UploadingFile)
       await uploadFile(uploadUrl, file)
@@ -62,7 +62,7 @@ export function EditTodo() {
   const [file, setFile] = useState(undefined)
   const [uploadState, setUploadState] = useState(UploadState.NoUpload)
   const { getAccessTokenSilently } = useAuth0()
-  const { todoId } = useParams()
+  const { id } = useParams()
 
   return (
     <div>

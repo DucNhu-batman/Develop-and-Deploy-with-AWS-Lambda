@@ -30,7 +30,7 @@ export function Todos() {
       <Grid padded>
         {todos.map((todo, pos) => {
           return (
-            <Grid.Row key={todo.todoId}>
+            <Grid.Row key={todo.id}>
               <Grid.Column width={1} verticalAlign="middle">
                 <Checkbox
                   onChange={() => onTodoCheck(pos)}
@@ -47,7 +47,7 @@ export function Todos() {
                 <Button
                   icon
                   color="blue"
-                  onClick={() => onEditButtonClick(todo.todoId)}
+                  onClick={() => onEditButtonClick(todo.id)}
                 >
                   <Icon name="pencil" />
                 </Button>
@@ -56,7 +56,7 @@ export function Todos() {
                 <Button
                   icon
                   color="red"
-                  onClick={() => onTodoDelete(todo.todoId)}
+                  onClick={() => onTodoDelete(todo.id)}
                 >
                   <Icon name="delete" />
                 </Button>
@@ -74,14 +74,14 @@ export function Todos() {
     )
   }
 
-  async function onTodoDelete(todoId) {
+  async function onTodoDelete(id) {
     try {
       const accessToken = await getAccessTokenSilently({
-        audience: `https://test-endpoint.auth0.com/api/v2/`,
+        audience: `https://dev-ta3xeq8gnykc6zo2.us.auth0.com/api/v2/`,
         scope: 'delete:todo'
       })
-      await deleteTodo(accessToken, todoId)
-      setTodos(todos.filter((todo) => todo.todoId !== todoId))
+      await deleteTodo(accessToken, id)
+      setTodos(todos.filter((todo) => todo.id !== id))
     } catch (e) {
       alert('Todo deletion failed')
     }
@@ -91,10 +91,13 @@ export function Todos() {
     try {
       const todo = todos[pos]
       const accessToken = await getAccessTokenSilently({
-        audience: `https://test-endpoint.auth0.com/api/v2/`,
+        audience: `https://dev-ta3xeq8gnykc6zo2.us.auth0.com/api/v2/`,
         scope: 'write:todo'
       })
-      await patchTodo(accessToken, todo.todoId, {
+      console.log("todos", todos)
+      console.log('pos', pos)
+      await patchTodo(accessToken,  {
+        id: todo.id,
         name: todo.name,
         dueDate: todo.dueDate,
         done: !todo.done
@@ -110,8 +113,8 @@ export function Todos() {
     }
   }
 
-  function onEditButtonClick(todoId) {
-    navigate(`/todos/${todoId}/edit`)
+  function onEditButtonClick(id) {
+    navigate(`/todos/${id}/edit`)
   }
 
   const { user, getAccessTokenSilently } = useAuth0()
@@ -125,21 +128,21 @@ export function Todos() {
   })
 
   useEffect(() => {
-    async function foo() {
+    async function getAndShowDatas() {
       try {
         const accessToken = await getAccessTokenSilently({
-          audience: `https://test-endpoint.auth0.com/api/v2/`,
+          audience: `https://dev-ta3xeq8gnykc6zo2.us.auth0.com/api/v2/`,
           scope: 'read:todos'
         })
-        console.log('Access token: ' + accessToken)
         const todos = await getTodos(accessToken)
+        console.log('Todos: ', todos)
         setTodos(todos)
         setLoadingTodos(false)
       } catch (e) {
         alert(`Failed to fetch todos: ${e.message}`)
       }
     }
-    foo()
+    getAndShowDatas()
   }, [getAccessTokenSilently])
 
   return (
