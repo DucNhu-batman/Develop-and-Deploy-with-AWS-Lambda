@@ -64,6 +64,7 @@ functions:
           method: get
           authorizer: Auth
           path: todos
+          cors: true
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -84,6 +85,7 @@ functions:
           method: post
           authorizer: Auth
           path: todos
+          cors: true
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -104,6 +106,7 @@ functions:
           method: patch
           authorizer: Auth
           path: todos
+          cors: true
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -124,6 +127,7 @@ functions:
           method: delete
           authorizer: Auth
           path: todos
+          cors: true
     iamRoleStatements:
       - Effect: Allow
         Action:

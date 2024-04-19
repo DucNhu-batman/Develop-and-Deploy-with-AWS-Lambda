@@ -1,8 +1,10 @@
 import { DynamoDB } from '@aws-sdk/client-dynamodb'
 import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb'
 import { v4 as uuidv4 } from 'uuid'
+import middy from '@middy/core'
+import cors from '@middy/http-cors'
 import { handler as getUserId } from '../auth/userId.js'
-
+import httpErrorHandler from '@middy/http-error-handler'
 /**
  * {
       "userId":"google-oauth2|115783759495544745774",
@@ -17,36 +19,45 @@ const dynamoDbDocument = DynamoDBDocument.from(new DynamoDB())
 
 const groupsTable = process.env.TODO_TABLE
 
-export async function handler(event) {
-  const itemId = uuidv4()
-  const parsedBody = JSON.parse(event.body)
-  console.log("creatret Todo function, parsedBody", parsedBody)
+export const handler =
+  middy()
+    .use(httpErrorHandler())
+    .use(
+      cors({
+        credentials: true
+      })
+    )
+    .handler(async (event) => {
+      const itemId = uuidv4()
+      const parsedBody = JSON.parse(event.body)
+      console.log("creatret Todo function, parsedBody", parsedBody)
 
-    // Extracting user ID using "getUserId"
-  const authorization = event.headers.Authorization
-  const userId = getUserId(authorization)
-  console.log("userId", userId)
-  const newItem = {
-    ...parsedBody,
-    id: itemId,
-    userId
-  }
+      // Extracting user ID using "getUserId"
+      const authorization = event.headers.Authorization
+      const userId = getUserId(authorization)
+      console.log("userId", userId)
+      const newItem = {
+        ...parsedBody,
+        id: itemId,
+        userId
+      }
 
-  await dynamoDbDocument.put({
-    TableName: groupsTable,
-    Item: newItem
-  })
+      await dynamoDbDocument.put({
+        TableName: groupsTable,
+        Item: newItem
+      })
 
-  return {
-    statusCode: 201,
-    headers: {
-      'Access-Control-Allow-Origin': '*'
-    },
-    body: JSON.stringify({
-      newItem
+      return {
+        statusCode: 201,
+        headers: {
+          'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify({
+          newItem
+        })
+      }
     })
-  }
-}
+
 
 // function getUserId(authorizationHeader) {
 
