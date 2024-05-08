@@ -16,7 +16,7 @@ import httpErrorHandler from '@middy/http-error-handler'
  */
 const dynamoDbDocument = DynamoDBDocument.from(new DynamoDB())
 
-const groupsTable = process.env.TODO_TABLE
+const todoTable = process.env.TODO_TABLE
 
 export const handler =
   middy()
@@ -27,25 +27,25 @@ export const handler =
       })
     )
     .handler(async (event) => {
-  const parsedBody = JSON.parse(event.body)
-  console.log("parsedBody", parsedBody)
-  const authorization = event.headers.Authorization
-  const userId = getUserId(authorization)
-  console.log("userId", userId)
-  await dynamoDbDocument.put({
-    TableName: groupsTable,
-    Item: {
-      ...parsedBody
-    },
-  })
+      const parsedBody = JSON.parse(event.body)
+      console.log("parsedBody", parsedBody)
+      const authorization = event.headers.Authorization
+      const userId = getUserId(authorization)
+      console.log("userId", userId)
+      await dynamoDbDocument.put({
+        TableName: todoTable,
+        Item: {
+          ...parsedBody
+        },
+      })
 
-  return {
-    statusCode: 201,
-    headers: {
-      'Access-Control-Allow-Origin': '*'
-    },
-    body: JSON.stringify({
-      parsedBody
+      return {
+        statusCode: 201,
+        headers: {
+          'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify({
+          parsedBody
+        })
+      }
     })
-  }
-})

@@ -17,7 +17,7 @@ import httpErrorHandler from '@middy/http-error-handler'
  */
 const dynamoDbDocument = DynamoDBDocument.from(new DynamoDB())
 
-const groupsTable = process.env.TODO_TABLE
+const todoTable = process.env.TODO_TABLE
 
 export const handler =
   middy()
@@ -43,7 +43,7 @@ export const handler =
       }
 
       await dynamoDbDocument.put({
-        TableName: groupsTable,
+        TableName: todoTable,
         Item: newItem
       })
 

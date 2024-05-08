@@ -11,7 +11,7 @@ import httpErrorHandler from '@middy/http-error-handler'
  */
 const dynamoDbDocument = DynamoDBDocument.from(new DynamoDB())
 
-const groupsTable = process.env.TODO_TABLE
+const todoTable = process.env.TODO_TABLE
 
 export const handler =
   middy()
@@ -28,7 +28,7 @@ export const handler =
         Key: {
           id: parsedBody.id
         },
-        TableName: groupsTable
+        TableName: todoTable
       })
 
       return {
