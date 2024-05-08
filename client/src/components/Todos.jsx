@@ -34,7 +34,7 @@ export function Todos() {
               <Grid.Column width={1} verticalAlign="middle">
                 <Checkbox
                   onChange={() => onTodoCheck(pos)}
-                  checked={todo.done}
+                  checked={todo?.done}
                 />
               </Grid.Column>
               <Grid.Column width={10} verticalAlign="middle">
@@ -61,8 +61,8 @@ export function Todos() {
                   <Icon name="delete" />
                 </Button>
               </Grid.Column>
-              {todo.attachmentUrl && (
-                <Image src={todo.attachmentUrl} size="small" wrapped />
+              {todo.imageUrl && (
+                <Image src={todo.imageUrl} size="small" wrapped />
               )}
               <Grid.Column width={16}>
                 <Divider />

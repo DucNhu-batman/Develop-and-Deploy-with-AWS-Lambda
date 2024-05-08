@@ -18,9 +18,10 @@ export function NewTodoInput({ onNewTodo }) {
       const dueDate = calculateDueDate()
       const createdTodo = await createTodo(accessToken, {
         name: newTodoName,
+        done: false,
         dueDate
       })
-      onNewTodo(createdTodo)
+      window.location.reload();
     } catch (e) {
       console.log('Failed to created a new TODO', e)
       alert('Todo creation failed')
